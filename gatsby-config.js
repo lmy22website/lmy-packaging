@@ -1,19 +1,31 @@
 module.exports = {
   siteMetadata: {
-    title: "Gatsby + Netlify CMS Starter",
-    description:
-      "This repo contains an example business website that is built with Gatsby, and Netlify CMS.It follows the JAMstack architecture by using Git as a single source of truth, and Netlify for continuous deployment, and CDN distribution.",
+    title: "LMY Packaged Foods",
+    description: "",
   },
   plugins: [
     "gatsby-plugin-react-helmet",
     {
       resolve: "gatsby-plugin-sass",
       options: {
+        postCssPlugins: [
+          require(`postcss-preset-env`)({
+            stage: 2,
+            browsers: "> 0.5%, last 2 versions, ie 7",
+            features: {
+              "nesting-rules": true,
+            },
+          }),
+          // require(`postcss-node-sass`)(),
+          require(`autoprefixer`)(),
+        ],
         sassOptions: {
           indentedSyntax: true,
+          precision: 6,
         },
       },
     },
+    "gatsby-plugin-svgr",
     {
       // keep as first gatsby-source-filesystem plugin for gatsby image support
       resolve: "gatsby-source-filesystem",
@@ -65,6 +77,22 @@ module.exports = {
             },
           },
         ],
+      },
+    },
+    {
+      resolve: "gatsby-plugin-breakpoints",
+      options: {
+        queries: {
+          smallMobile: "(max-width: 462px)",
+          mobile: "(max-width: 959px)",
+          portrait: "(orientation: portrait)",
+        },
+      },
+    },
+    {
+      resolve: `gatsby-plugin-netlify-cms-paths`,
+      options: {
+        cmsConfig: `/static/admin/config.yml`,
       },
     },
     {
